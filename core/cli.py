@@ -9,37 +9,39 @@ console = Console()
 VERSION = "0.1.0"
 
 
-def panel_creator(item, header):
-    """
-    Create a styled Rich panel.
-
-    Returns the Panel instead of printing it so
-    the caller decides where and when to display it.
-    """
+def panel_creator(
+    item,
+    header,
+    text_align="left",
+    panel_align=None,
+):
     panel_style = Style(color="green3", bold=True, dim=True)
 
-    return Panel(
-        item,
+    panel = Panel(
+        Align(item, align=text_align),
         title=header,
         border_style=panel_style,
     )
 
+    if panel_align:
+        return Align(panel, align=panel_align)
+
+    return panel
+
+
 def abyss_help():
-    help_msg = Panel(
-        Align.center(
-            f"""Welcome to ABYSS v{VERSION}
+    console.print(
+        panel_creator(f"""Welcome to ABYSS v{VERSION}
 
-ABYSS is my operation environment and playground.
+    ABYSS is my operation environment and playground.
 
-Commands
+    Available Commands
 
-1. help
-2. exit
-"""
-        )
-    )
+    1. help
+    2. exit
+    ""","Abyss help", text_align="center"))
 
-    console.print(help_msg)
+
 
 def start_screen():
     panel_style = Style(color="green3", bold=True, dim=True)
@@ -55,21 +57,17 @@ def start_screen():
         style="italic",
     )
 
-    console.print()
-
-    console.print(
-        Panel(
-            Align.center(title + "\n" + subtitle),
-            border_style=panel_style,
-            title="[bold red1]WELCOME[/]",
-        )
-    )
-
     missions = [
         "• Integrate Tasks module into Abyss",
     ]
 
     mission_text = "[bold]Current Mission[/]\n" + "\n".join(missions)
+
+    console.print()
+
+    console.print(
+        panel_creator(f"{title}\n{subtitle}", f"[bold red1]ABYSS v{VERSION}", text_align="center")
+    )
 
     console.print(
         panel_creator(
@@ -80,13 +78,10 @@ def start_screen():
 
     console.print(
         panel_creator(
-            "✓ Startup screen\n"
-            "✓ Rich integration\n"
-            "• Working on Tasks module",
+            "✓ Startup screen\n" "✓ Rich integration\n" "• Working on Tasks module",
             "[bold red1]CHANGES[/]",
         )
     )
-
 
 
 if __name__ == "__main__":

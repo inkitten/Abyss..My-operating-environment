@@ -5,20 +5,18 @@ def main():
     start_screen()
 
     while True:
-        print("1. help")
-        print("2. exit")
 
-        choice = input("Enter your choice: ").strip()
+        choice = input("abyss:> ").strip()
 
-        if choice not in ["1", "2"]:
+        if choice not in ["help", "q", "exit"]:
             print("Please enter a valid choice.")
             continue
 
-        elif choice == "1":
+        elif choice == "help":
             abyss_help()
             continue
 
-        elif choice == "2":
+        elif choice in ["q", "exit"]:
             break
 
     print("Goodbye!")
