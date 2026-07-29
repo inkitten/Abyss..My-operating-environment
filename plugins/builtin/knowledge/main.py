@@ -4,7 +4,7 @@ import pathlib as pl
 
 def config_file():
     try:
-        with open("config.toml", "r") as f:
+        with open("./plugins/builtin/knowledge/config.toml", "r") as f:
             config = toml.load(f)
     except FileNotFoundError:
         print("config file not found")
@@ -21,18 +21,27 @@ def add_note(main_path, name):
         return
 
 
+def remove_note(main_path, name):
+    note_path = main_path / f"{name}.md"
+    print(note_path)
+    try:
+        note_path.unlink(missing_ok=False)
+    except FileNotFoundError:
+        print("Note dose not exists")
+        return
 
-def remove_note():
-    pass
 
-
-def view_notes():
-    pass
+def view_notes(main_path):
+    items_list = list(main_path.glob("*"))
+    for i in items_list:
+        print(i)
+    print("\n")
 
 
 def main():
     config = config_file()
-    def_path = config.get("main").get("path")
+    # def_path = config.get("main").get("path")
+    def_path = config["main"]["path"]
     if not def_path:
         print("Please enter a path for nots")
         def_path = input("path: ")
@@ -56,9 +65,9 @@ def main():
         elif choice == "1":
             add_note(path, input("Note Name: "))
         elif choice == "2":
-            remove_note()
+            remove_note(path, input("Note Name:"))
         elif choice == "3":
-            view_notes()
+            view_notes(path)
         elif choice == "4":
             print("Thank you for using Notes module")
             break
