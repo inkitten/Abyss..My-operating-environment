@@ -6,7 +6,7 @@ from rich.style import Style
 
 console = Console()
 
-VERSION = "0.1.0"
+VERSION = "0.2.0"
 
 
 def panel_creator(
@@ -29,23 +29,11 @@ def panel_creator(
     return panel
 
 
-def abyss_help():
-    console.print(
-        panel_creator(f"""Welcome to ABYSS v{VERSION}
-
-    ABYSS is my operation environment and playground.
-
-    Available Commands
-
-    1. help
-    2. exit
-    ""","Abyss help", text_align="center"))
-
+def bullet_list(items, symbol="•"):
+    return "\n".join(f"{symbol} {item}" for item in items)
 
 
 def start_screen():
-    panel_style = Style(color="green3", bold=True, dim=True)
-
     title = Text(
         f"ABYSS v{VERSION}",
         style="bold green3",
@@ -58,27 +46,35 @@ def start_screen():
     )
 
     missions = [
-        "• Integrate Tasks module into Abyss",
+        "Integrate Tasks module into Abyss",
     ]
 
-    mission_text = "[bold]Current Mission[/]\n" + "\n".join(missions)
+    changes = [
+        "Startup screen",
+        "Rich integration",
+        "Working on Tasks module",
+    ]
 
     console.print()
 
     console.print(
-        panel_creator(f"{title}\n{subtitle}", f"[bold red1]ABYSS v{VERSION}", text_align="center")
+        panel_creator(
+            f"{title}\n{subtitle}",
+            f"[bold red1]ABYSS v{VERSION}",
+            text_align="center",
+        )
     )
 
     console.print(
         panel_creator(
-            mission_text,
+            f"[bold]Current Mission[/]\n{bullet_list(missions)}",
             "[bold red1]MISSION[/]",
         )
     )
 
     console.print(
         panel_creator(
-            "✓ Startup screen\n" "✓ Rich integration\n" "• Working on Tasks module",
+            bullet_list(changes, "✓"),
             "[bold red1]CHANGES[/]",
         )
     )

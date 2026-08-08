@@ -14,7 +14,7 @@ def load_config():
         dict | None: Parsed TOML configuration or None if the file is missing.
     """
     try:
-        with open("./plugins/builtin/knowledge/config.toml", "r") as file:
+        with open("plugins/internals/knowledge/config.toml", "r") as file:
             return toml.load(file)
     except FileNotFoundError:
         print("Configuration file not found.")
@@ -134,6 +134,21 @@ Welcome to Notes
 
         else:
             print("Please choose a valid option.\n")
+
+
+def register():
+    return {
+        "name": "notes",
+        "version": "0.1.0",
+        "author": "inkitten",
+        "description": "Knowledge management",
+        "commands": {
+            "notes": main,
+            # Will be added in the future.
+            # "notes add": add_note,
+            # "notes remove": remove_note,
+        },
+    }
 
 
 if __name__ == "__main__":

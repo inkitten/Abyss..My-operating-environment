@@ -1,23 +1,15 @@
-from core.cli import start_screen, abyss_help
+from core.cli import start_screen
+from core.plugin_manager import run_command
 
 
 def main():
     start_screen()
-
     while True:
 
         choice = input("abyss:> ").strip()
-
-        if choice not in ["help", "q", "exit"]:
-            print("Please enter a valid choice.")
-            continue
-
-        elif choice == "help":
-            abyss_help()
-            continue
-
-        elif choice in ["q", "exit"]:
+        if choice in ["q", "exit"]:
             break
+        run_command(choice)
 
     print("Goodbye!")
 

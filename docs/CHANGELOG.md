@@ -4,4 +4,5 @@ Added
 
 - Initial CLI
 - Logger
-- Tasks plugin
+- Notes plugin
+- Dynamic plugin manager
