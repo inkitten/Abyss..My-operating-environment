@@ -1,6 +1,8 @@
 import pathlib as pl
-
+from core.logger import get_logger
 import toml
+
+logger = get_logger(__name__)
 
 
 # =============================================================================
@@ -15,9 +17,11 @@ def load_config():
     """
     try:
         with open("plugins/internals/knowledge/config.toml", "r") as file:
+            logger.info("Notes configuration loaded")
             return toml.load(file)
     except FileNotFoundError:
         print("Configuration file not found.")
+        logger.error("Notes configuration file not found")
         return None
 
 
@@ -47,8 +51,10 @@ def add_note(notes_dir: pl.Path, note_name: str):
     try:
         note_path.touch(exist_ok=False)
         print(f"Created '{note_name}'.")
+        logger.info("Created note: %s", note_name)
     except FileExistsError:
         print("Note already exists.")
+        logger.warning("Attempted to create existing note: %s", note_name)
 
 
 def remove_note(notes_dir: pl.Path, note_name: str):
@@ -60,8 +66,10 @@ def remove_note(notes_dir: pl.Path, note_name: str):
     try:
         note_path.unlink()
         print(f"Deleted '{note_name}'.")
+        logger.info("Deleted note: %s", note_name)
     except FileNotFoundError:
         print("Note does not exist.")
+        logger.warning("Attempted to delete nonexistent note: %s", note_name)
 
 
 def view_notes(notes_dir: pl.Path):
@@ -86,9 +94,11 @@ def view_notes(notes_dir: pl.Path):
 # CLI
 # =============================================================================
 def main():
+    logger.info("Notes module started")
     config = load_config()
 
     if config is None:
+        logger.error("Notes module stopped: configuration unavailable")
         return
 
     notes_root = config["main"].get("path")
@@ -130,6 +140,7 @@ Welcome to Notes
 
         elif choice == "4":
             print("Thank you for using the Notes module.")
+            logger.info("Notes module exited")
             break
 
         else:

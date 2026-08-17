@@ -5,9 +5,11 @@ from rich.console import Console
 from rich.panel import Panel
 from rich import print
 from datetime import date
+from core.logger import get_logger
 import importlib
 
 DATABASE = importlib.import_module("plugins.internals.ToDo.database")
+logger = get_logger(__name__)
 #####################################
 console = Console()
 
@@ -21,6 +23,7 @@ def add_task():
     tags = input("Enter tags (space separated): ")
 
     DATABASE.add_task_db(task_title, created_date, tags)
+    logger.info("task added")
 
 
 def show_tasks():
@@ -67,6 +70,7 @@ def complete_task():
             continue
         else:
             DATABASE.complete_task_db(choice)
+            logger.info("Task completed: id=%s", choice)
             break
 
 
@@ -79,6 +83,7 @@ def delete_task():
             continue
         else:
             DATABASE.delete_task_db(task_id)
+            logger.info("Task deleted: id=%s", task_id)
             break
     print("Task deleted.")
 

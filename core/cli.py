@@ -46,13 +46,12 @@ def start_screen():
     )
 
     missions = [
-        "Integrate Tasks module into Abyss",
+        "Make Abyss executable",
     ]
 
     changes = [
-        "Startup screen",
-        "Rich integration",
-        "Working on Tasks module",
+        "Plugin manager added",
+        "Task manager module added",
     ]
 
     console.print()

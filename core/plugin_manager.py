@@ -1,5 +1,8 @@
+from core.logger import get_logger
 import importlib
 import pathlib as pl
+
+logger = get_logger(__name__)
 
 from core.cli import panel_creator, console, VERSION
 
@@ -53,13 +56,15 @@ def load_plugins(
             continue
 
         module = importlib.import_module(f"plugins.internals.{plugin.name}.main")
+        logger.info("Loading plugin: %s", plugin.name)
 
         plugin_info = module.register()
 
         try:
             commands.update(plugin_info["commands"])
+            logger.info("Plugin loaded: %s", plugin.name)
         except KeyError:
-            print(f"No commands available in plugin: {plugin.name}")
+            logger.exception("Failed to load plugin: %s", plugin.name)
 
     # External plugins will be implemented later.
     if load_externals:

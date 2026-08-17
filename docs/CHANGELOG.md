@@ -6,3 +6,4 @@
 - Logger
 - Notes plugin
 - Dynamic plugin manager
+- Task manager
