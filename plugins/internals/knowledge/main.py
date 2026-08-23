@@ -3,7 +3,7 @@ from core.logger import get_logger
 import toml
 
 logger = get_logger(__name__)
-
+config_file = pl.Path(__file__) / "config.toml"
 
 # =============================================================================
 # Configuration
@@ -16,7 +16,7 @@ def load_config():
         dict | None: Parsed TOML configuration or None if the file is missing.
     """
     try:
-        with open("plugins/internals/knowledge/config.toml", "r") as file:
+        with open(config_file, "r") as file:
             logger.info("Notes configuration loaded")
             return toml.load(file)
     except FileNotFoundError:
@@ -109,7 +109,7 @@ def main():
 
         config["main"]["path"] = notes_root
 
-        with open("./plugins/builtin/knowledge/config.toml", "w") as file:
+        with open(config_file, "w") as file:
             toml.dump(config, file)
 
     notes_dir = pl.Path(notes_root) / "Abyss_notes"

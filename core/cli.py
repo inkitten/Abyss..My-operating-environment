@@ -6,7 +6,7 @@ from rich.style import Style
 
 console = Console()
 
-VERSION = "0.2.0"
+VERSION = "0.2.1"
 
 
 def panel_creator(
@@ -53,8 +53,6 @@ def start_screen():
         "Plugin manager added",
         "Task manager module added",
     ]
-
-    console.print()
 
     console.print(
         panel_creator(

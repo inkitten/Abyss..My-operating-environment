@@ -1,8 +1,10 @@
 # import graund
 import sqlite3
-
+from pathlib import Path
 # connect sqlite database
-conn = sqlite3.connect("tasks.db")
+database_path = Path(__file__).parent / "tasks.db"
+database_path_string = str(database_path.absolute())
+conn = sqlite3.connect(database_path_string)
 # create cursor
 c = conn.cursor()
 # create table structure if doesn't exist
@@ -80,7 +82,7 @@ def search_by_tag_db(tag):
         FROM tasks
         WHERE tags LIKE ?
         """,
-        (f"%{tag}%",)
+        (f"%{tag}%",),
     )
 
     return c.fetchall()

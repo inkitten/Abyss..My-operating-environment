@@ -7,8 +7,13 @@ from rich import print
 from datetime import date
 from core.logger import get_logger
 import importlib
+from pathlib import Path
 
-DATABASE = importlib.import_module("plugins.internals.ToDo.database")
+DB_File = Path(__file__)
+PWD = Path().cwd()
+DB_File_STR = str(DB_File.relative_to(PWD))
+# DATABASE = importlib.import_module("plugins.internals.ToDo.database")
+DATABASE = importlib.import_module(DB_File_STR.replace("/",".")[:-3])
 logger = get_logger(__name__)
 #####################################
 console = Console()

@@ -48,7 +48,7 @@ def load_plugins(
     """
 
     internal_plugins = plugins_dir / "internals"
-    external_plugins = plugins_dir / "external"
+    external_plugins = plugins_dir / "externals"
 
     # Load built-in plugins.
     for plugin in internal_plugins.glob("*"):
