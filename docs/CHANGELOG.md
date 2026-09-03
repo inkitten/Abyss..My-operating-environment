@@ -1,4 +1,4 @@
-0.2.0
+0.2.1
 
 # Added
 
@@ -7,3 +7,7 @@
 - Notes plugin
 - Dynamic plugin manager
 - Task manager
+
+# Changed
+
+- Relative path used

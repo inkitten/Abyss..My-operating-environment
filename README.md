@@ -16,7 +16,7 @@ Current modules
 
 Clone or extract Abyss, then install its dependencies:
 ```bash
-git clone https://github.com/inkitten/Abyss.My-operating-environment.git Abyss
+git clone https://github.com/inkitten/Abyss..My-operating-environment.git Abyss
 
 cd Abyss
 ```
