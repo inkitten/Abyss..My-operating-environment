@@ -8,12 +8,8 @@ from datetime import date
 from core.logger import get_logger
 import importlib
 from pathlib import Path
+from .database import *
 
-DB_File = Path(__file__)
-PWD = Path().cwd()
-DB_File_STR = str(DB_File.relative_to(PWD))
-# DATABASE = importlib.import_module("plugins.internals.ToDo.database")
-DATABASE = importlib.import_module(DB_File_STR.replace("/",".")[:-3])
 logger = get_logger(__name__)
 #####################################
 console = Console()
@@ -27,7 +23,7 @@ def add_task():
     created_date = date.today().isoformat()
     tags = input("Enter tags (space separated): ")
 
-    DATABASE.add_task_db(task_title, created_date, tags)
+    add_task_db(task_title, created_date, tags)
     logger.info("task added")
 
 
@@ -35,7 +31,7 @@ def show_tasks():
     """
     logs all the tasks from database
     """
-    rows = DATABASE.log_tasks_db()
+    rows = log_tasks_db()
     # if no task break the function
     if not rows:
         print("No tasks found.")
@@ -74,7 +70,7 @@ def complete_task():
             print("Invalid ID!\n")
             continue
         else:
-            DATABASE.complete_task_db(choice)
+            complete_task_db(choice)
             logger.info("Task completed: id=%s", choice)
             break
 
@@ -87,7 +83,7 @@ def delete_task():
             print("Please enter a valid task ID.")
             continue
         else:
-            DATABASE.delete_task_db(task_id)
+            delete_task_db(task_id)
             logger.info("Task deleted: id=%s", task_id)
             break
     print("Task deleted.")
@@ -96,7 +92,7 @@ def delete_task():
 def search_by_tag():
     tag = input("Tag: ")
 
-    rows = DATABASE.search_by_tag_db(tag)
+    rows = search_by_tag_db(tag)
 
     if not rows:
         print("No matching tasks.")
@@ -136,7 +132,7 @@ def main():
         elif choice == 5:
             search_by_tag()
         elif choice == 6:
-            DATABASE.conn.close()
+            conn.close()
             print("Bye!")
             break
 

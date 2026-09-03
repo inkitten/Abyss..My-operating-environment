@@ -3,7 +3,8 @@ from core.logger import get_logger
 import toml
 
 logger = get_logger(__name__)
-config_file = pl.Path(__file__) / "config.toml"
+config_file = pl.Path(__file__).parent / "config.toml"
+
 
 # =============================================================================
 # Configuration
