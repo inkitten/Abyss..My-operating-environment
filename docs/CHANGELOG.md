@@ -1,4 +1,4 @@
-0.2.1
+0.3.0
 
 # Added
 
@@ -10,4 +10,4 @@
 
 # Changed
 
-- Relative path used
+- command-line executable style

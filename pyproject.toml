@@ -1,0 +1,23 @@
+[project]
+name = "Abyss"
+version = "0.2.1"
+description = "A modular command-line playground"
+readme = "README.md"
+requires-python = ">= 3.8"
+license = "MIT"
+authors = [{ name = "inkitten", email = "mehdi.bahadoran@proton.me" }]
+urls = { Homepage = "https://github.com/inkitten/Abyss..My-operating-environment" }
+dependencies = ["rich", "toml"]
+
+[project.scripts]
+Abyss = "core.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+py-modules = ["main"]
+
+[tool.setuptools.packages.find]
+include = ["core"]

@@ -1,6 +1,7 @@
 from core.logger import get_logger
-import importlib
+import importlib.util as util
 import pathlib as pl
+import sys
 
 logger = get_logger(__name__)
 
@@ -35,10 +36,20 @@ DEFAULT_COMMANDS = {
 }
 
 
+def load_module_from_path(module_name, dir_path, file_path):
+    spec = util.spec_from_file_location(
+        module_name, location=file_path, submodule_search_locations=[str(dir_path)]
+    )
+    module = util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def load_plugins(
     plugins_dir=PLUGINS_ROOT,
     load_externals=True,
-    commands=DEFAULT_COMMANDS,
+    commands=None,
 ):
     """
     Find built-in plugins and register their commands.
@@ -46,31 +57,26 @@ def load_plugins(
     Each plugin must provide a register() function that
     returns its command information.
     """
+    if not commands:
+        commands = dict(DEFAULT_COMMANDS)
 
-    internal_plugins = plugins_dir / "internals"
-    external_plugins = plugins_dir / "externals"
-
-    # Load built-in plugins.
-    for plugin in internal_plugins.glob("*"):
-        if not plugin.is_dir():
+    for t in plugins_dir.glob("*"):
+        if not t.is_dir() or t.name[0] in "_-.$@":
             continue
+        plugin_type = t.name
 
-        module = importlib.import_module(f"plugins.internals.{plugin.name}.main")
-        logger.info("Loading plugin: %s", plugin.name)
-
-        plugin_info = module.register()
-
-        try:
-            commands.update(plugin_info["commands"])
-            logger.info("Plugin loaded: %s", plugin.name)
-        except KeyError:
-            logger.exception("Failed to load plugin: %s", plugin.name)
-
-    # External plugins will be implemented later.
-    if load_externals:
-        for plugin in external_plugins.glob("*"):
-            pass
-
+        for p in t.glob("*"):
+            if not p.is_dir() or p.name[0] in "_-.$@":
+                continue
+            plugin_name = p.name
+            try:
+                module = load_module_from_path(plugin_name, p, p / "main.py")
+                register = getattr(module, "register")
+                module_state = register()
+                commands.update(module_state["commands"])
+            except Exception as e:
+                logger.error(f"Unable to load {plugin_name}: {e}")
+                print(f"Unable to add {plugin_name} plugin")
     return commands
 
 

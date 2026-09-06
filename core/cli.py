@@ -6,7 +6,7 @@ from rich.style import Style
 
 console = Console()
 
-VERSION = "0.2.1"
+VERSION = "0.3.0"
 
 
 def panel_creator(
@@ -46,12 +46,11 @@ def start_screen():
     )
 
     missions = [
-        "Make Abyss executable",
+        "Adding API",
     ]
 
     changes = [
-        "Plugin manager added",
-        "Task manager module added",
+        "command-line executable style",
     ]
 
     console.print(
@@ -75,6 +74,21 @@ def start_screen():
             "[bold red1]CHANGES[/]",
         )
     )
+
+
+def main():
+    start_screen()
+    while True:
+
+        choice = input("abyss:> ").strip()
+        if choice in ["q", "exit"]:
+            break
+
+        from core.plugin_manager import run_command
+
+        run_command(choice)
+
+    print("Goodbye!")
 
 
 if __name__ == "__main__":
