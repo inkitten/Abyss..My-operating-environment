@@ -21,7 +21,13 @@ ABYSS is my operation environment and playground.
 
 Available Commands
 
-{"\n".join(COMMANDS.keys())}
+{
+"\n".join(
+    f"{idx}. {m}--default" if type(m) != dict
+    else f"{idx}. {m.get('name')}-{m.get('version')}"
+    for idx, m in enumerate(Modules, start=1)
+)
+}
 """,
             "Abyss Help",
             text_align="center",
@@ -57,8 +63,9 @@ def load_plugins(
     Each plugin must provide a register() function that
     returns its command information.
     """
-    if not commands:
+    if commands is None:
         commands = dict(DEFAULT_COMMANDS)
+    commands_and_state = [k for k in DEFAULT_COMMANDS.keys()]
 
     for t in plugins_dir.glob("*"):
         if not t.is_dir() or t.name[0] in "_-.$@":
@@ -73,11 +80,12 @@ def load_plugins(
                 module = load_module_from_path(plugin_name, p, p / "main.py")
                 register = getattr(module, "register")
                 module_state = register()
+                commands_and_state.append(module_state)
                 commands.update(module_state["commands"])
             except Exception as e:
                 logger.error(f"Unable to load {plugin_name}: {e}")
                 print(f"Unable to add {plugin_name} plugin")
-    return commands
+    return commands_and_state, commands
 
 
 def run_command(command):
@@ -89,4 +97,4 @@ def run_command(command):
 
 
 # Build the command registry when the command system is loaded.
-COMMANDS = load_plugins()
+Modules, COMMANDS = load_plugins()
