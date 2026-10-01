@@ -11,22 +11,45 @@ from core.cli import panel_creator, console, VERSION
 PLUGINS_ROOT = pl.Path(__file__).parent.parent / "plugins"
 
 
-def abyss_help():
+def abyss_help(command=None):
     """Display available Abyss commands."""
-    console.print(
-        panel_creator(
-            f"""Welcome to ABYSS v{VERSION}
+    if not command:
+        console.print(
+            panel_creator(
+                f"""Welcome to ABYSS v{VERSION}
 
 ABYSS is my operation environment and playground.
 
 Available Commands
-
-{"\n".join(COMMANDS.keys())}
-""",
-            "Abyss Help",
-            text_align="center",
+    Abyss:
+        1. help
+        2. options
+        3. q
+        4. exit
+    Modules:
+        {
+        "\n\t".join(
+            f"{idx}. {m.get('name')}-{m.get('version')}"
+            for idx, m in enumerate(Modules, start=1)
         )
-    )
+        }
+""",
+                "Abyss Help",
+                text_align="center",
+            )
+        )
+    else:
+        module = next((d for d in Modules if d.get("name") == command), None)
+        if not module:
+            print("Module not found")
+        elif not module.get("description"):
+            print("No description for this module")
+        else:
+            console.print(
+                panel_creator(
+                    f"{module.get('description')}", f"Abyss help({module.get('name')})"
+                )
+            )
 
 
 # Commands that belong to Abyss itself rather than a plugin.
@@ -57,8 +80,9 @@ def load_plugins(
     Each plugin must provide a register() function that
     returns its command information.
     """
-    if not commands:
+    if commands is None:
         commands = dict(DEFAULT_COMMANDS)
+    commands_and_state = []
 
     for t in plugins_dir.glob("*"):
         if not t.is_dir() or t.name[0] in "_-.$@":
@@ -73,20 +97,24 @@ def load_plugins(
                 module = load_module_from_path(plugin_name, p, p / "main.py")
                 register = getattr(module, "register")
                 module_state = register()
+                commands_and_state.append(module_state)
                 commands.update(module_state["commands"])
             except Exception as e:
                 logger.error(f"Unable to load {plugin_name}: {e}")
                 print(f"Unable to add {plugin_name} plugin")
-    return commands
+    return commands_and_state, commands
 
 
-def run_command(command):
+def run_command(command, option=""):
     """Find and execute a registered Abyss command."""
     try:
-        COMMANDS[command]()
+        if not option:
+            COMMANDS[command]()
+        else:
+            COMMANDS[command](option)
     except KeyError:
         print("Command doesn't exist")
 
 
 # Build the command registry when the command system is loaded.
-COMMANDS = load_plugins()
+Modules, COMMANDS = load_plugins()

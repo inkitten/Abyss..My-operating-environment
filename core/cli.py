@@ -80,13 +80,21 @@ def main():
     start_screen()
     while True:
 
-        choice = input("abyss:> ").strip()
-        if choice in ["q", "exit"]:
+        choice = input("abyss:> ").split(" ")
+        for _ in range(100):
+            try:
+                choice.remove("")
+            except:
+                pass
+        if choice[0] in ["q", "exit"]:
             break
 
         from core.plugin_manager import run_command
 
-        run_command(choice)
+        if len(choice) == 1:
+            run_command(choice[0])
+        elif len(choice) >= 2:
+            run_command(choice[0], choice[1])
 
     print("Goodbye!")
 
