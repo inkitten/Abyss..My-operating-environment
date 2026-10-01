@@ -66,6 +66,7 @@ Abyss/
 │
 ├── docs/
 │   ├── CHANGELOG.md
+│   ├── DEBUG_TODO.md
 │   ├── PHILOSOPHY.md
 │   └── ROADMAP.md
 │
@@ -115,8 +116,22 @@ abyss:> help <module>
 For example:
 
 ```text
-abyss:> help ToDo
+abyss:> help tasks
 ```
+
+> [!NOTE]
+> Module help uses the module's registered name, which may differ from its
+> folder name (the task manager lives in `plugins/internals/ToDo/` but is
+> registered as `tasks`).
+
+## Known Issues
+
+Abyss is a learning project in active development, and v0.2.2 ships with a
+handful of known bugs (blank input crash, dropped CLI arguments, version
+mismatch, and more).
+
+The full list lives in [`docs/DEBUG_TODO.md`](docs/DEBUG_TODO.md) and is the
+main target of the next release.
 
 ## Development
 
