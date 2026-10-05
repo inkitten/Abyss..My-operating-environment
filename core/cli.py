@@ -1,3 +1,4 @@
+from core.version import VERSION
 from rich.console import Console
 from rich.panel import Panel
 from rich.align import Align
@@ -5,8 +6,6 @@ from rich.text import Text
 from rich.style import Style
 
 console = Console()
-
-VERSION = "0.3.0"
 
 
 def panel_creator(

@@ -42,15 +42,11 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
       `plugins/internals/ToDo/main.py` prints "Task deleted." regardless of
       whether the ID existed. Check `c.rowcount` in `delete_task_db`.
 
-- [ ] **Version mismatch in three places**
+- [x] **Version mismatch in three places**
       `pyproject.toml` = 0.2.1, `core/cli.py` VERSION = 0.3.0, CHANGELOG = 0.3.0.
       Single source of truth: read the version via
       `importlib.metadata.version("Abyss")` (fallback constant when not installed).
 
-- [ ] **Tag search matches substrings**
-      `database.py` `search_by_tag_db` uses `LIKE '%tag%'` — searching "work"
-      also matches "network". Strip `%`/`_` from input, or store/compare tags
-      as separate tokens.
 
 ## 🟡 Hygiene / quality
 
