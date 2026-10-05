@@ -80,12 +80,9 @@ def main():
     start_screen()
     while True:
 
-        choice = input("abyss:> ").split(" ")
-        for _ in range(100):
-            try:
-                choice.remove("")
-            except:
-                pass
+        choice = input("abyss:> ").strip().split()
+        if not choice:
+            continue
         if choice[0] in ["q", "exit"]:
             break
 
@@ -94,7 +91,7 @@ def main():
         if len(choice) == 1:
             run_command(choice[0])
         elif len(choice) >= 2:
-            run_command(choice[0], choice[1])
+            run_command(choice[0], choice[1:])
 
     print("Goodbye!")
 

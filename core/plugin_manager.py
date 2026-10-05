@@ -38,7 +38,8 @@ Available Commands
                 text_align="center",
             )
         )
-    else:
+    elif len(command) == 1:
+        command = command[0]
         module = next((d for d in Modules if d.get("name") == command), None)
         if not module:
             print("Module not found")
@@ -50,6 +51,8 @@ Available Commands
                     f"{module.get('description')}", f"Abyss help({module.get('name')})"
                 )
             )
+    else:
+        print("help command don't get more than one varible")
 
 
 # Commands that belong to Abyss itself rather than a plugin.

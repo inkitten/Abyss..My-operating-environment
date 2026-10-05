@@ -10,7 +10,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
 
 ## 🔴 Critical
 
-- [ ] **Blank input crashes the REPL**
+- [x] **Blank input crashes the REPL**
       `core/cli.py` — pressing Enter on an empty line raises `IndexError`:
       `"".split(" ")` → `[""]` → the removal loop empties the list → `choice[0]` fails.
       Fix: `choice = input("abyss:> ").strip().split()` and drop the whole
@@ -21,7 +21,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
       in the main loop and in every plugin menu (`ToDo`, `knowledge`).
       Fix: catch both at the REPL and exit (or re-prompt) gracefully.
 
-- [ ] **Installed `Abyss` script can't find plugins**
+- [x] **Installed `Abyss` script can't find plugins**
       `core/plugin_manager.py` — `PLUGINS_ROOT` is derived from `__file__`, so a
       real `pip install .` looks for plugins inside site-packages and finds none.
       Fix: resolve plugins relative to the project root / configurable path.
@@ -33,7 +33,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
       Either match folder names as a fallback in `abyss_help`, or make
       registered name == folder name.
 
-- [ ] **Extra command arguments are silently dropped**
+- [x] **Extra command arguments are silently dropped**
       `run_command(choice[0], choice[1])` throws away everything after the
       second token. The planned `notes add` / `notes remove` subcommands need
       the full list: pass `choice[1:]`.
@@ -92,7 +92,6 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
 
 ## Verification checklist for 0.2.3
 
-- [ ] `python main.py` starts; pressing Enter on an empty prompt does nothing harmful
 - [ ] `Ctrl+D` at the prompt exits cleanly with a goodbye message
 - [ ] `help`, `help tasks` (and folder-name fallback) all work
 - [ ] `tasks add a b c` style multi-word input no longer loses arguments
