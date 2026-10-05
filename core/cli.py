@@ -4,6 +4,7 @@ from rich.panel import Panel
 from rich.align import Align
 from rich.text import Text
 from rich.style import Style
+from sys import exit as sysExit
 
 console = Console()
 
@@ -79,20 +80,23 @@ def main():
     start_screen()
     while True:
 
-        choice = input("abyss:> ").strip().split()
-        if not choice:
-            continue
-        if choice[0] in ["q", "exit"]:
-            break
+        try:
+            choice = input("abyss:> ").strip().split()
 
-        from core.plugin_manager import run_command
+            if not choice:
+                continue
+            if choice[0] in ["q", "exit"]:
+                raise EOFError
 
-        if len(choice) == 1:
-            run_command(choice[0])
-        elif len(choice) >= 2:
-            run_command(choice[0], choice[1:])
+            from core.plugin_manager import run_command
 
-    print("Goodbye!")
+            if len(choice) == 1:
+                run_command(choice[0])
+            elif len(choice) >= 2:
+                run_command(choice[0], choice[1:])
+        except EOFError, KeyboardInterrupt:
+            print("Goodby!")
+            sysExit(0)
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
       Fix: `choice = input("abyss:> ").strip().split()` and drop the whole
       `for _ in range(100)` cleanup loop.
 
-- [ ] **`Ctrl+D` / `Ctrl+C` crash with a raw traceback**
+- [x] **`Ctrl+D` / `Ctrl+C` crash with a raw traceback**
       `input()` raises `EOFError` / `KeyboardInterrupt` which nothing catches —
       in the main loop and in every plugin menu (`ToDo`, `knowledge`).
       Fix: catch both at the REPL and exit (or re-prompt) gracefully.
