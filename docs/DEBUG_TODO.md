@@ -28,7 +28,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
 
 ## 🟠 Wrong behavior
 
-- [ ] **`help ToDo` doesn't work**
+- [x] **`help ToDo` doesn't work**
       The README advertised it; the module registers under the name `tasks`.
       Either match folder names as a fallback in `abyss_help`, or make
       registered name == folder name.
@@ -38,7 +38,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
       second token. The planned `notes add` / `notes remove` subcommands need
       the full list: pass `choice[1:]`.
 
-- [ ] **`delete_task` claims success even when nothing was deleted**
+- [x] **`delete_task` claims success even when nothing was deleted**
       `plugins/internals/ToDo/main.py` prints "Task deleted." regardless of
       whether the ID existed. Check `c.rowcount` in `delete_task_db`.
 

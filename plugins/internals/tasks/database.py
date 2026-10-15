@@ -1,6 +1,8 @@
 # import graund
+from os import link
 import sqlite3
 from pathlib import Path
+
 # connect sqlite database
 database_path = Path(__file__).parent / "tasks.db"
 database_path_string = str(database_path.absolute())
@@ -71,8 +73,8 @@ def complete_task_db(choice):
 
 def delete_task_db(task_id):
     c.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
-
     conn.commit()
+    return c.rowcount > 0
 
 
 def search_by_tag_db(tag):

@@ -83,10 +83,12 @@ def delete_task():
             print("Please enter a valid task ID.")
             continue
         else:
-            delete_task_db(task_id)
-            logger.info("Task deleted: id=%s", task_id)
-            break
-    print("Task deleted.")
+            if delete_task_db(task_id):
+                print("Task deleted.")
+                logger.info("Task deleted: id=%s", task_id)
+                break
+            else:
+                print("Invalid ID\n")
 
 
 def search_by_tag():
