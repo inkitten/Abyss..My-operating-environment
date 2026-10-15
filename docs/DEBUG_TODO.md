@@ -10,47 +10,43 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
 
 ## 🔴 Critical
 
-- [ ] **Blank input crashes the REPL**
+- [x] **Blank input crashes the REPL**
       `core/cli.py` — pressing Enter on an empty line raises `IndexError`:
       `"".split(" ")` → `[""]` → the removal loop empties the list → `choice[0]` fails.
       Fix: `choice = input("abyss:> ").strip().split()` and drop the whole
       `for _ in range(100)` cleanup loop.
 
-- [ ] **`Ctrl+D` / `Ctrl+C` crash with a raw traceback**
+- [x] **`Ctrl+D` / `Ctrl+C` crash with a raw traceback**
       `input()` raises `EOFError` / `KeyboardInterrupt` which nothing catches —
       in the main loop and in every plugin menu (`ToDo`, `knowledge`).
       Fix: catch both at the REPL and exit (or re-prompt) gracefully.
 
-- [ ] **Installed `Abyss` script can't find plugins**
+- [x] **Installed `Abyss` script can't find plugins**
       `core/plugin_manager.py` — `PLUGINS_ROOT` is derived from `__file__`, so a
       real `pip install .` looks for plugins inside site-packages and finds none.
       Fix: resolve plugins relative to the project root / configurable path.
 
 ## 🟠 Wrong behavior
 
-- [ ] **`help ToDo` doesn't work**
+- [x] **`help ToDo` doesn't work**
       The README advertised it; the module registers under the name `tasks`.
       Either match folder names as a fallback in `abyss_help`, or make
       registered name == folder name.
 
-- [ ] **Extra command arguments are silently dropped**
+- [x] **Extra command arguments are silently dropped**
       `run_command(choice[0], choice[1])` throws away everything after the
       second token. The planned `notes add` / `notes remove` subcommands need
       the full list: pass `choice[1:]`.
 
-- [ ] **`delete_task` claims success even when nothing was deleted**
+- [x] **`delete_task` claims success even when nothing was deleted**
       `plugins/internals/ToDo/main.py` prints "Task deleted." regardless of
       whether the ID existed. Check `c.rowcount` in `delete_task_db`.
 
-- [ ] **Version mismatch in three places**
+- [x] **Version mismatch in three places**
       `pyproject.toml` = 0.2.1, `core/cli.py` VERSION = 0.3.0, CHANGELOG = 0.3.0.
       Single source of truth: read the version via
       `importlib.metadata.version("Abyss")` (fallback constant when not installed).
 
-- [ ] **Tag search matches substrings**
-      `database.py` `search_by_tag_db` uses `LIKE '%tag%'` — searching "work"
-      also matches "network". Strip `%`/`_` from input, or store/compare tags
-      as separate tokens.
 
 ## 🟡 Hygiene / quality
 
@@ -64,7 +60,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
       runs `load_plugins()` at import. Move initialization into functions called
       explicitly — required before tests are possible.
 
-- [ ] **Circular import worked around instead of fixed**
+- [x] **Circular import worked around instead of fixed**
       `plugin_manager` ↔ `cli` works only because of a function-body import.
       Move `panel_creator` / `console` into a `core/ui.py` so the cycle dies.
 
@@ -92,7 +88,6 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
 
 ## Verification checklist for 0.2.3
 
-- [ ] `python main.py` starts; pressing Enter on an empty prompt does nothing harmful
 - [ ] `Ctrl+D` at the prompt exits cleanly with a goodbye message
 - [ ] `help`, `help tasks` (and folder-name fallback) all work
 - [ ] `tasks add a b c` style multi-word input no longer loses arguments

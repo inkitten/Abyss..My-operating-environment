@@ -88,13 +88,14 @@ cd Abyss
 Install the dependencies:
 
 ```bash
-python -m pip install -r requirements.txt
+python -m pip install -e .
 ```
 
+After turning virtual environment on
 Run Abyss:
 
 ```bash
-python main.py
+Abyss
 ```
 
 ## Commands

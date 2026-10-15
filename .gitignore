@@ -26,6 +26,10 @@ dist/
 .vscode/
 .idea/
 
+# Obsidian workspace state (machine-specific, changes constantly)
+docs/.obsidian/workspace.json
+docs/.obsidian/workspace.mobile.json
+
 # -----------------------------------------------------------------------------
 # OS Files
 # -----------------------------------------------------------------------------
@@ -46,6 +50,9 @@ htmlcov/
 # -----------------------------------------------------------------------------
 .env
 .env.*
+
+# Agent tooling state
+.freebuff/
 
 # -----------------------------------------------------------------------------
 # Abyss Runtime Files
