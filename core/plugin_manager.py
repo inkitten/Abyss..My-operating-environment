@@ -5,7 +5,8 @@ import sys
 
 logger = get_logger(__name__)
 
-from core.cli import panel_creator, console, VERSION
+from core.ui import panel_creator, console
+from core.version import VERSION
 
 # Root directory containing Abyss plugins.
 PLUGINS_ROOT = pl.Path(__file__).parent.parent / "plugins"
