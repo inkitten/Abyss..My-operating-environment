@@ -8,7 +8,7 @@ from datetime import date
 from core.logger import get_logger
 import importlib
 from pathlib import Path
-from .database import *
+from . import database
 
 logger = get_logger(__name__)
 #####################################
@@ -23,7 +23,7 @@ def add_task():
     created_date = date.today().isoformat()
     tags = input("Enter tags (space separated): ")
 
-    add_task_db(task_title, created_date, tags)
+    database.add_task_db(task_title, created_date, tags)
     logger.info("task added")
 
 
@@ -31,7 +31,7 @@ def show_tasks():
     """
     logs all the tasks from database
     """
-    rows = log_tasks_db()
+    rows = database.log_tasks_db()
     # if no task break the function
     if not rows:
         print("No tasks found.")
@@ -70,7 +70,7 @@ def complete_task():
             print("Invalid ID!\n")
             continue
         else:
-            complete_task_db(choice)
+            database.complete_task_db(choice)
             logger.info("Task completed: id=%s", choice)
             break
 
@@ -83,7 +83,7 @@ def delete_task():
             print("Please enter a valid task ID.")
             continue
         else:
-            if delete_task_db(task_id):
+            if database.delete_task_db(task_id):
                 print("Task deleted.")
                 logger.info("Task deleted: id=%s", task_id)
                 break
@@ -94,7 +94,7 @@ def delete_task():
 def search_by_tag():
     tag = input("Tag: ")
 
-    rows = search_by_tag_db(tag)
+    rows = database.search_by_tag_db(tag)
 
     if not rows:
         print("No matching tasks.")
@@ -134,7 +134,7 @@ def main():
         elif choice == 5:
             search_by_tag()
         elif choice == 6:
-            conn.close()
+            database.conn.close()
             print("Bye!")
             break
 

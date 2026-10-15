@@ -60,7 +60,7 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
       runs `load_plugins()` at import. Move initialization into functions called
       explicitly — required before tests are possible.
 
-- [ ] **Circular import worked around instead of fixed**
+- [x] **Circular import worked around instead of fixed**
       `plugin_manager` ↔ `cli` works only because of a function-body import.
       Move `panel_creator` / `console` into a `core/ui.py` so the cycle dies.
 
