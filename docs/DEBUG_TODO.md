@@ -18,13 +18,18 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
 
 - [x] **`Ctrl+D` / `Ctrl+C` crash with a raw traceback**
       `input()` raises `EOFError` / `KeyboardInterrupt` which nothing catches —
-      in the main loop and in every plugin menu (`ToDo`, `knowledge`).
+      in the main loop and in every plugin menu (`tasks`, `knowledge`).
       Fix: catch both at the REPL and exit (or re-prompt) gracefully.
+      *Done for the main REPL in v0.2.3. The plugin menus are still open, see
+      "Found during the 0.2.3 pass".*
 
 - [x] **Installed `Abyss` script can't find plugins**
       `core/plugin_manager.py` — `PLUGINS_ROOT` is derived from `__file__`, so a
       real `pip install .` looks for plugins inside site-packages and finds none.
       Fix: resolve plugins relative to the project root / configurable path.
+      *Worked around in v0.2.3: the README now says to use `pip install -e .`.
+      `PLUGINS_ROOT` itself is unchanged, so a non-editable install still
+      finds no plugins.*
 
 ## 🟠 Wrong behavior
 
@@ -83,6 +88,27 @@ Legend: 🔴 crash / data risk · 🟠 wrong behavior · 🟡 hygiene / quality
 - [ ] **Repo hygiene**
       Remove the stray SQLite file `x` at the repo root (done in v0.2.2) and
       make sure `*.db` artifacts can never be committed again.
+
+---
+
+## Found during the 0.2.3 pass
+
+- [ ] **`core/cli.py` only parses on Python 3.14+**
+      `except EOFError, KeyboardInterrupt:` is a `SyntaxError` before 3.14.
+      Fix: `except (EOFError, KeyboardInterrupt):`, or raise `requires-python`
+      to `>= 3.14` in `pyproject.toml`.
+- [ ] **Extra arguments crash `tasks` / `notes`**
+      The REPL now forwards `choice[1:]`, but both plugin `main()` functions
+      take no parameters, so `tasks foo` raises `TypeError`. Accept `*args`
+      or catch the error in `run_command`.
+- [ ] **Ctrl+D / Ctrl+C inside the `tasks` and `notes` menus** still raise a
+      traceback (see the Critical item above).
+- [ ] **Tag search matches substrings** (carried over from the earlier list)
+      `search_by_tag_db` still uses `LIKE '%tag%'`.
+- [ ] **Small cleanups**: stray `from os import link` in
+      `plugins/internals/tasks/database.py`; the exit message says "Goodby!".
+- [ ] **`pyproject.toml` version** must be bumped to `0.2.3` at release time,
+      since the banner reads it from the package metadata.
 
 ---
 

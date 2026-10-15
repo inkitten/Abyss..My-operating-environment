@@ -10,11 +10,15 @@ The project is intentionally developed in small steps. It is not designed to be 
 
 ## Current Status
 
-🚧 **Early Development — v0.2.x**
+🚧 **Early Development — v0.2.3**
+
+v0.2.3 is a stability release: it fixes the bugs found in the v0.2.2 review
+and adds no new features. See [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 
 Abyss currently provides:
 
-- Interactive command-line interface
+- Interactive command-line interface (blank input is ignored, `Ctrl+C` /
+  `Ctrl+D` exit cleanly)
 - Dynamic plugin/module loading
 - Built-in help system
 - Module-specific help and descriptions
@@ -56,12 +60,14 @@ Abyss/
 ├── core/
 │   ├── cli.py
 │   ├── logger.py
-│   └── plugin_manager.py
+│   ├── plugin_manager.py
+│   ├── ui.py
+│   └── version.py
 │
 ├── plugins/
 │   ├── internals/
 │   │   ├── knowledge/
-│   │   └── ToDo/
+│   │   └── tasks/
 │   └── externals/
 │
 ├── docs/
@@ -70,9 +76,8 @@ Abyss/
 │   ├── PHILOSOPHY.md
 │   └── ROADMAP.md
 │
-├── main.py
+├── LICENSE
 ├── README.md
-├── requirements.txt
 └── pyproject.toml
 ```
 
@@ -85,18 +90,36 @@ git clone https://github.com/inkitten/Abyss..My-operating-environment.git Abyss
 cd Abyss
 ```
 
-Install the dependencies:
+Create and activate a virtual environment (recommended):
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
+
+Install Abyss in editable mode (this also installs the dependencies):
 
 ```bash
 python -m pip install -e .
 ```
 
-After turning virtual environment on
+> [!IMPORTANT]
+> Install with `-e` (editable). Plugins are looked up relative to the source
+> checkout, so a regular `pip install .` will not find them yet.
+
+> [!NOTE]
+> The CLI currently uses syntax that requires **Python 3.14 or newer**, even
+> though `pyproject.toml` still declares `>= 3.8`. See
+> [`docs/DEBUG_TODO.md`](docs/DEBUG_TODO.md).
+
 Run Abyss:
 
 ```bash
 Abyss
 ```
+
+`requirements.txt` and `main.py` no longer exist; `Abyss` is the only entry
+point.
 
 ## Commands
 
@@ -118,21 +141,41 @@ For example:
 
 ```text
 abyss:> help tasks
+abyss:> help notes
 ```
 
-> [!NOTE]
-> Module help uses the module's registered name, which may differ from its
-> folder name (the task manager lives in `plugins/internals/ToDo/` but is
-> registered as `tasks`).
+`help` accepts at most one module name. Module names match the plugin folder
+names (`tasks` lives in `plugins/internals/tasks/`).
+
+Other commands:
+
+| Command | What it does |
+| --- | --- |
+| `tasks` | Open the task manager menu |
+| `notes` | Open the notes menu |
+| `options` | Same as `help` |
+| `q`, `exit` | Quit |
+
+Blank lines are ignored. `Ctrl+C` and `Ctrl+D` also quit cleanly.
+Everything typed after the command name is forwarded to the command as a
+list (groundwork for subcommands such as `notes add`). The current `tasks` and
+`notes` menus take no arguments yet, so run them without any.
 
 ## Known Issues
 
-Abyss is a learning project in active development, and v0.2.2 ships with a
-handful of known bugs (blank input crash, dropped CLI arguments, version
-mismatch, and more).
+v0.2.3 fixed most of the bugs found in the v0.2.2 review. The ones still open
+include:
 
-The full list lives in [`docs/DEBUG_TODO.md`](docs/DEBUG_TODO.md) and is the
-main target of the next release.
+- The CLI needs Python 3.14+ (an `except A, B:` clause), but `pyproject.toml`
+  declares `>= 3.8`.
+- `pip install .` (non-editable) can't find plugins; use `pip install -e .`.
+- `Ctrl+C` / `Ctrl+D` inside the `tasks` and `notes` menus still show a
+  traceback.
+- Running `tasks` or `notes` with extra arguments (e.g. `tasks add`) crashes
+  the REPL with a `TypeError`.
+- Tag search in `tasks` matches substrings (`work` also matches `network`).
+
+The full list lives in [`docs/DEBUG_TODO.md`](docs/DEBUG_TODO.md).
 
 ## Development
 
