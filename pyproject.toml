@@ -3,7 +3,7 @@ name = "Abyss"
 version = "0.2.3"
 description = "A modular command-line playground"
 readme = "README.md"
-requires-python = ">= 3.8"
+requires-python = ">= 3.12"
 license = "MIT"
 authors = [{ name = "inkitten", email = "mehdi.bahadoran@proton.me" }]
 urls = { Homepage = "https://github.com/inkitten/Abyss..My-operating-environment" }
