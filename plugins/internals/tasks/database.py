@@ -1,5 +1,4 @@
 # import graund
-from os import link
 import sqlite3
 from pathlib import Path
 
