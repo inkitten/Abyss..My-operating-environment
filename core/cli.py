@@ -70,8 +70,8 @@ def main():
                 run_command(choice[0])
             elif len(choice) >= 2:
                 run_command(choice[0], choice[1:])
-        except EOFError, KeyboardInterrupt:
-            print("Goodby!")
+        except (EOFError, KeyboardInterrupt):
+            print("Goodbye!")
             sysExit(0)
 
 
