@@ -109,7 +109,7 @@ python -m pip install -e .
 
 > [!NOTE]
 > The CLI currently uses syntax that requires **Python 3.14 or newer**, even
-> though `pyproject.toml` still declares `>= 3.8`. See
+> though `pyproject.toml` still declares `>= 3.12`. See
 > [`docs/DEBUG_TODO.md`](docs/DEBUG_TODO.md).
 
 Run Abyss:
@@ -149,12 +149,12 @@ names (`tasks` lives in `plugins/internals/tasks/`).
 
 Other commands:
 
-| Command | What it does |
-| --- | --- |
-| `tasks` | Open the task manager menu |
-| `notes` | Open the notes menu |
-| `options` | Same as `help` |
-| `q`, `exit` | Quit |
+| Command     | What it does               |
+| ----------- | -------------------------- |
+| `tasks`     | Open the task manager menu |
+| `notes`     | Open the notes menu        |
+| `options`   | Same as `help`             |
+| `q`, `exit` | Quit                       |
 
 Blank lines are ignored. `Ctrl+C` and `Ctrl+D` also quit cleanly.
 Everything typed after the command name is forwarded to the command as a
@@ -167,7 +167,7 @@ v0.2.3 fixed most of the bugs found in the v0.2.2 review. The ones still open
 include:
 
 - The CLI needs Python 3.14+ (an `except A, B:` clause), but `pyproject.toml`
-  declares `>= 3.8`.
+  declares `>= 3.12`.
 - `pip install .` (non-editable) can't find plugins; use `pip install -e .`.
 - `Ctrl+C` / `Ctrl+D` inside the `tasks` and `notes` menus still show a
   traceback.
