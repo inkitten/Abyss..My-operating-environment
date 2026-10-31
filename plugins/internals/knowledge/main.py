@@ -1,6 +1,9 @@
 import pathlib as pl
-from core.logger import get_logger
+import re
+
 import toml
+
+from core.logger import get_logger
 
 logger = get_logger(__name__)
 config_file = pl.Path(__file__).parent / "config.toml"
@@ -29,7 +32,7 @@ def load_config():
 # =============================================================================
 # Helpers
 # =============================================================================
-def get_note_path(notes_dir: pl.Path, note_name: str) -> pl.Path:
+def get_note_path(notes_dir: pl.Path, note_name: str) -> pl.Path | None:
     """
     Return the full path of a note.
 
@@ -37,6 +40,9 @@ def get_note_path(notes_dir: pl.Path, note_name: str) -> pl.Path:
         Notes + "Meeting"
             -> ~/Abyss_notes/Meeting.md
     """
+    if not re.fullmatch(r"[A-Za-z0-9 _-]+", note_name):
+        print("\nInvalid note name\n")
+        return
     return notes_dir / f"{note_name}.md"
 
 
@@ -48,6 +54,8 @@ def add_note(notes_dir: pl.Path, note_name: str):
     Create a new markdown note.
     """
     note_path = get_note_path(notes_dir, note_name)
+    if not note_path:
+        return
 
     try:
         note_path.touch(exist_ok=False)
@@ -64,6 +72,8 @@ def remove_note(notes_dir: pl.Path, note_name: str):
     """
     note_path = get_note_path(notes_dir, note_name)
 
+    if not note_path:
+        return
     try:
         note_path.unlink()
         print(f"Deleted '{note_name}'.")
